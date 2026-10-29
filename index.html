@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Clara · Lectura de partituras</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+<header class="site-header">
+  <div class="brand"><div class="brand-mark" aria-hidden="true">𝄞</div><div><h1>Clara<span class="dot">.</span></h1><p>Entrena tu lectura de partituras</p></div></div>
+  <nav class="tabs" aria-label="Navegación principal">
+    <button class="tab active" data-tab="practice" aria-current="page">Practicar</button>
+    <button class="tab" data-tab="stats">Estadísticas</button>
+    <button class="tab" data-tab="settings">Ajustes</button>
+  </nav>
+</header>
+<main>
+<section id="view-practice" class="view">
+  <div class="practice-top">
+    <div><p class="eyebrow">ENTRENAMIENTO</p><h2>Una nota más, un paso adelante.</h2><p class="muted">Mira la partitura, reconoce las alturas y responde.</p></div>
+    <div class="session-panel"><span id="session-status" class="status-dot">Sesión activa</span><strong id="session-clock" class="clock">00:00</strong><div class="session-actions"><button id="pause-session" class="small-btn" type="button">Pausar</button><button id="finish-session" class="small-btn outline" type="button">Terminar</button></div></div>
+  </div>
+  <div class="practice-toolbar">
+    <div class="inline-field"><label for="quick-kind">Ejercicios</label><select id="quick-kind"><option value="notes">Notas</option><option value="chords">Acordes</option><option value="mixed">Mixto</option></select></div>
+    <div class="inline-field"><label for="quick-method">Responder con</label><select id="quick-method"><option value="text">Teclado (texto)</option><option value="virtual">Piano virtual</option><option value="midi">Piano MIDI</option></select></div>
+    <span class="toolbar-help" id="current-strategy">Selección equilibrada</span>
+  </div>
+  <section class="exercise-card" aria-label="Ejercicio actual">
+    <div class="exercise-header"><div><span id="exercise-tag" class="chip">NOTA</span><span id="exercise-key" class="key-tag">Sin alteraciones</span></div><span id="exercise-count" class="small-muted">Ejercicio 1</span></div>
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+    <div id="score-wrap" class="score-wrap"><svg id="score" role="img" aria-label="Partitura del ejercicio" viewBox="0 0 720 270"></svg></div>
+    <div id="paused-overlay" class="overlay hidden"><div class="overlay-card"><span class="overlay-icon">Ⅱ</span><h3>Sesión en pausa</h3><p>El ejercicio y el cronómetro están detenidos.</p><button id="resume-session" class="primary">Reanudar</button></div></div>
+    <div id="ended-overlay" class="overlay hidden"><div class="overlay-card"><h3>Sesión terminada</h3><p id="ended-summary">Tus resultados se han guardado.</p><button id="new-session" class="primary">Nueva sesión</button></div></div>
+    <div id="answer-area" class="answer-area">
+      <div id="note-text-area" class="answer-section"><label for="note-input">¿Qué nota es?</label><div class="input-row"><input id="note-input" autocomplete="off" spellcheck="false" placeholder="Ej. Fa#4, Sibb3, Do5"><button id="note-submit" class="primary">Comprobar</button></div><p class="field-tip">Se aceptan #, b, ##, bb y x. La respuesta escrita respeta las enarmonías.</p></div>
+      <div id="chord-identity-area" class="answer-section hidden"><p class="answer-heading">Identifica el acorde</p><div class="chord-identify">
+        <div class="field"><label for="chord-root">Fundamental</label><select id="chord-root"></select></div>
+        <div class="field"><label for="chord-quality">Tipo</label><select id="chord-quality"></select></div>
+        <div class="field"><label for="chord-inversion">Inversión</label><select id="chord-inversion"></select></div>
+      </div><button id="reinterpret" class="text-button" type="button">Cambiar interpretación del acorde</button></div>
+      <div id="chord-notes-area" class="answer-section hidden"><p class="answer-heading">Notas exactas, de grave a aguda</p><div id="chord-inputs" class="chord-notes-grid"></div><p class="field-tip" id="chord-notes-tip">Identifica cada nota y su octava.</p><div id="chord-submit-area"><button id="chord-submit" class="primary">Comprobar acorde</button></div></div>
+      <div id="virtual-area" class="answer-section hidden"><div class="virtual-head"><span id="virtual-prompt">Pulsa la tecla correcta.</span><button id="virtual-check" class="small-btn hidden">Comprobar teclas</button></div><div class="keyboard-scroll" id="keyboard-scroll"><div id="keyboard" class="keyboard" aria-label="Piano virtual de 88 teclas"></div></div><p class="field-tip">En acordes, selecciona todas las teclas y pulsa «Comprobar teclas». Las octavas deben coincidir.</p></div>
+      <div id="midi-area" class="answer-section hidden"><div class="midi-banner"><div><strong id="midi-state">No hay piano conectado</strong><p id="midi-hint">Conecta tu piano MIDI para responder con las teclas físicas.</p></div><button id="midi-connect" class="small-btn">Conectar MIDI</button></div><div id="midi-selection" class="hidden"><label for="midi-device">Dispositivo de entrada</label><select id="midi-device"></select></div><p id="midi-played" class="midi-played" aria-live="polite"></p></div>
+    </div>
+    <div class="exercise-footer"><button id="reveal" class="quiet-btn">Mostrar solución</button><button id="skip" class="quiet-btn">Saltar ejercicio <span aria-hidden="true">→</span></button></div>
+  </section>
+  <div class="practice-bottom"><div><span class="mini-label">EN ESTA SESIÓN</span><strong id="today-progress">0 ejercicios · 0 % al primer intento</strong></div><p id="practice-message" class="muted">Las estadísticas se guardan automáticamente.</p></div>
+</section>
+<section id="view-stats" class="view hidden">
+  <div class="page-heading"><p class="eyebrow">TU EVOLUCIÓN</p><h2>Tu progreso, nota a nota.</h2><p class="muted">Los resultados reflejan tus respuestas reales, no ejemplos.</p></div>
+  <div id="stats-overview" class="stats-cards"></div>
+  <section class="panel"><div class="panel-header"><h3>Lo que más necesitas repasar</h3><span class="small-muted">Menor precisión primero</span></div><div id="weak-stats" class="bar-list"></div></section>
+  <section class="panel"><div class="panel-header"><h3>Resultados por categoría</h3></div><div id="category-stats" class="bar-list"></div></section>
+  <section class="panel"><div class="panel-header"><h3>Últimas sesiones</h3></div><div id="sessions-list" class="sessions-list"></div></section>
+  <section class="panel"><h3>Copias de seguridad</h3><p class="muted">Tus datos se guardan en este navegador. Exporta un archivo para protegerlos.</p><div class="button-row"><button id="export-data" class="small-btn">Exportar JSON</button><button id="import-data" class="small-btn outline">Importar JSON</button><input id="import-file" type="file" accept=".json,application/json" class="hidden"><button id="clear-data" class="small-btn danger">Borrar estadísticas</button></div></section>
+</section>
+<section id="view-settings" class="view hidden">
+  <div class="page-heading"><p class="eyebrow">PERSONALIZA TU PRÁCTICA</p><h2>Aprende a tu manera.</h2><p class="muted">Los cambios se aplican al siguiente ejercicio y se guardan automáticamente.</p></div>
+  <section class="panel"><div class="panel-header"><h3>Nivel y selección</h3><button id="reset-settings" class="small-btn outline">Restablecer ajustes</button></div><div class="settings-grid">
+    <div class="field"><label for="preset">Nivel</label><select id="preset"><option value="basic">Básico</option><option value="medium">Intermedio</option><option value="advanced">Avanzado</option><option value="custom">Personalizado</option></select></div>
+    <div class="field"><label for="strategy">Generación de ejercicios</label><select id="strategy"><option value="random">Aleatoria</option><option value="balanced">Equilibrada</option><option value="adaptive">Adaptativa</option></select></div>
+    <div class="field"><label for="clef">Clave</label><select id="clef"><option value="treble">Clave de sol</option><option value="bass">Clave de fa</option><option value="both">Sol y fa (aleatorio)</option></select></div>
+    <div class="field"><label for="key-signature">Armadura</label><select id="key-signature"></select></div>
+    <div class="field"><label for="accidentals">Alteraciones accidentales</label><select id="accidentals"><option value="none">Sin accidentales</option><option value="simple">Sostenidos, bemoles y becuadros</option><option value="double">También dobles ♯ y ♭</option></select></div>
+    <div class="field"><label for="min-octave">Octava mínima</label><select id="min-octave"></select></div>
+    <div class="field"><label for="max-octave">Octava máxima</label><select id="max-octave"></select></div>
+    <div class="field"><label for="feedback-mode">Al fallar</label><select id="feedback-mode"><option value="show">Mostrar la solución</option><option value="hide">Indicar el error sin revelarla</option></select></div>
+
+  </div>
+  <p class="field-tip">Distribución de alturas: aproximadamente 80 % de ejercicios con notas dentro del pentagrama o hasta 3 líneas adicionales; 20 % con 4 o 5. No se generan más de 5 líneas adicionales en ninguna nota. Si el rango de octavas no permite una categoría, se emplea la otra.</p>
+  </section>
+  <section class="panel"><h3>Acordes</h3><p class="muted">Las 9 familias × 12 fundamentales forman las 108 combinaciones base. Se añaden inversiones, posiciones abiertas y duplicaciones.</p><div class="check-header"><strong>Familias de acordes</strong><button id="all-families" class="text-button">Seleccionar todas</button></div><div id="family-options" class="check-grid"></div><div class="check-header"><strong>Fundamentales cromáticas</strong><button id="all-roots" class="text-button">Seleccionar todas</button></div><div id="root-options" class="check-grid"></div><div class="switch-row"><label><input id="use-inversions" type="checkbox"> Incluir inversiones</label><label><input id="use-open" type="checkbox"> Incluir posiciones abiertas</label><label><input id="use-duplicates" type="checkbox"> Duplicar notas en distintas octavas</label></div></section>
+  <section class="panel"><h3>Modo mixto y respuestas</h3><div class="settings-grid"><div class="field wide"><label for="note-percent">Porcentaje de notas individuales: <strong id="note-percent-label">50 %</strong></label><input id="note-percent" type="range" min="0" max="100" step="5"><div class="split-bar"><span id="bar-notes"></span><span id="bar-chords"></span></div><p class="field-tip">El resto serán acordes. Se mantiene la proporción en todos los métodos de selección.</p></div><div class="field"><label for="advance-delay">Espera después de acertar</label><div class="range-row"><input id="advance-delay" type="range" min="300" max="2000" step="100"><output id="delay-label">800 ms</output></div></div><div class="field"><label class="checkbox-line"><input id="mute-midi" type="checkbox"> Evitar sonido duplicado al usar MIDI</label><p class="field-tip">El piano físico puede producir su propio sonido.</p></div></div></section>
+  <div id="settings-warning" class="warning hidden" role="alert"></div>
+</section>
+</main>
+<footer class="site-footer"><span>Clara · Entrenamiento de lectura de alturas para piano</span><span>Sin cuentas · Tus datos permanecen en este navegador</span></footer>
+</div>
+<script src="script.js" defer></script>
+</body>
+</html>
